@@ -1,15 +1,5 @@
 import React, { useState } from 'react';
-import {
-    Search,
-    Filter,
-    Calendar,
-    FileText,
-    User,
-    Eye,
-    ShieldAlert,
-    ArrowUpDown,
-    Download
-} from 'lucide-react';
+import {Search,Filter,Calendar,FileText,User,Eye,ShieldAlert,ArrowUpDown,Download} from 'lucide-react';
 import { Badge } from '../components/Badge';
 import { AuditLogDetailModal } from '../components/AuditLogDetailModal';
 
@@ -183,8 +173,7 @@ export const AuditLogContent: React.FC = () => {
                         {mockAuditLogs.map((log, idx) => (
                             <tr
                                 key={log.id}
-                                className="group hover:bg-accent/[0.03] transition-all cursor-pointer border-l-2 border-l-transparent hover:border-l-accent"
-                                onClick={() => handleOpenDetails(log)}
+                                className="group hover:bg-accent/[0.03] transition-all  border-l-2 border-l-transparent hover:border-l-accent"
                             >
                                 <td className="py-5 px-4 text-center">
                                     <span className="text-[10px] font-mono text-muted-foreground/60">{idx + 1}</span>

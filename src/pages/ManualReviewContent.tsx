@@ -108,7 +108,7 @@ export const ManualReviewContent: React.FC = () => {
                     </thead>
                     <tbody className="divide-y divide-border/20">
                         {mockReviewData.map((item) => (
-                            <tr key={item.id} className="hover:bg-accent/5 transition-all group cursor-pointer" onClick={() => handleOpenReview(item)}>
+                            <tr key={item.id} className="hover:bg-accent/5 transition-all group " >
                                 <td className="py-4">
                                     <div className="flex flex-col">
                                         <span className="font-bold text-foreground group-hover:text-accent transition-colors">{item.name}</span>

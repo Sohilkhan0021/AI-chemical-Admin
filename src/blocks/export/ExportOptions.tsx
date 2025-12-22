@@ -75,10 +75,10 @@ export const ExportOptions: React.FC = () => {
 const ToggleOption: React.FC<{ label: string; defaultChecked?: boolean }> = ({ label, defaultChecked = false }) => {
     return (
         <label className="flex items-center justify-between group cursor-pointer">
-            <span className="text-sm font-medium text-foreground/80 group-hover:text-foreground transition-colors">{label}</span>
+            <span className="text-sm font-medium text-foreground group-hover:text-foreground transition-colors">{label}</span>
             <div className="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" className="sr-only peer" defaultChecked={defaultChecked} />
-                <div className="w-10 h-5 bg-muted rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-accent"></div>
+                <div className="w-11 h-6 bg-gray-200 border border-gray-300 rounded-full peer transition-all peer-checked:bg-accent peer-checked:border-accent after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:bg-white after:rounded-full after:shadow-sm after:transition-all peer-checked:after:translate-x-full"></div>
             </div>
         </label>
     );
