@@ -1,5 +1,5 @@
 import React from 'react';
-import { Clock, CheckCircle2, XCircle, Loader2 } from 'lucide-react';
+import { Clock, CheckCircle2, XCircle } from 'lucide-react';
 
 interface ExportTask {
     id: string;

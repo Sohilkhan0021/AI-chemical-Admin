@@ -22,6 +22,8 @@ import { Badge } from '../components/Badge';
 
 export default function SDSDetailsPage() {
     const { sdsId } = useParams();
+    // Use sdsId to fetch data in real implementation
+    console.log("Fetching SDS:", sdsId);
     const navigate = useNavigate();
 
     // Mock Data based on requirements
