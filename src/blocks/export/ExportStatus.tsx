@@ -31,7 +31,7 @@ export const ExportStatus: React.FC = () => {
 
                         <div className="flex items-center justify-between text-xs">
                             <div className="flex items-center gap-1.5 capitalize">
-                                {task.status === 'processing' && <Loader2 size={14} className="text-accent animate-spin" />}
+                                {/* {task.status === 'processing' && <Loader2 size={14} className="text-accent animate-spin" />} */}
                                 {task.status === 'queued' && <Clock size={14} className="text-muted-foreground" />}
                                 {task.status === 'completed' && <CheckCircle2 size={14} className="text-success" />}
                                 {task.status === 'failed' && <XCircle size={14} className="text-destructive" />}

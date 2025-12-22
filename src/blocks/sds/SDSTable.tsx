@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Eye,
     MoreVertical,
@@ -15,6 +16,7 @@ const dummyDocs = [
 ];
 
 export const SDSTable: React.FC = () => {
+    const navigate = useNavigate();
     const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -65,8 +67,8 @@ export const SDSTable: React.FC = () => {
                                     <button
                                         onClick={(e) => toggleDropdown(doc.id, e)}
                                         className={`w-8 h-8 flex items-center justify-center rounded-md transition-all ${openDropdownId === doc.id
-                                                ? 'bg-accent text-white'
-                                                : 'text-outline hover:bg-muted hover:text-foreground'
+                                            ? 'bg-accent text-white'
+                                            : 'text-outline hover:bg-muted hover:text-foreground'
                                             }`}
                                     >
                                         <MoreVertical size={16} />
@@ -77,7 +79,10 @@ export const SDSTable: React.FC = () => {
                                             ref={dropdownRef}
                                             className="absolute right-0 top-10 w-48 bg-white border border-border rounded-lg shadow-xl z-50 py-1 overflow-hidden animate-in fade-in zoom-in duration-200"
                                         >
-                                            <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors text-left">
+                                            <button
+                                                onClick={() => navigate(`/sds/${doc.id}`)}
+                                                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors text-left"
+                                            >
                                                 <Eye size={16} className="text-slate-400" />
                                                 <span>View Details</span>
                                             </button>

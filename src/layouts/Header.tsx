@@ -1,14 +1,13 @@
 import React from 'react';
 import { Search, Bell, ShieldCheck } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../auth/useAuthContext';
 import ChemAILogo from '../assets/images/logo.png';
+import { UserProfileDropdown } from '../dropdown/users/UserProfileDropdown';
 
 
 export const Header: React.FC = () => {
-    const { user, logout } = useAuthContext();
-    const navigate = useNavigate();
+    const { user } = useAuthContext();
     const [isOpen, setIsOpen] = useState(false);
     const profileRef = useRef<HTMLDivElement>(null);
 
@@ -24,15 +23,6 @@ export const Header: React.FC = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
-
-    const handleLogout = async () => {
-        try {
-            navigate('/auth/login');
-            await logout();
-        } catch (error) {
-            console.error('Logout failed', error);
-        }
-    };
 
     return (
         <header className="h-16 bg-card/80 backdrop-blur-md border-b border-border flex items-center justify-between px-8 sticky top-0 z-[90]">
@@ -51,9 +41,6 @@ export const Header: React.FC = () => {
                     <ShieldCheck size={16} />
                     <span>System Compliant</span>
                 </div>
-                {/* <button className="text-secondary hover:text-foreground transition-all">
-          <Moon size={20} />
-        </button> */}
                 <button className="relative text-outline hover:text-foreground transition-all">
                     <Bell size={20} />
                     <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-destructive rounded-full border-2 border-card"></span>
@@ -80,36 +67,7 @@ export const Header: React.FC = () => {
                         </div>
                     </button>
 
-                    {isOpen && (
-                        <div className="absolute top-full right-0 mt-3 w-64 bg-card border border-border rounded-xl shadow-lg p-4 flex flex-col gap-2 z-[100] animate-in fade-in zoom-in-95 duration-200">
-                            {/* Dropdown Header */}
-                            <div className="flex items-center gap-3 pb-3 mb-1 border-b border-border">
-                                <div className="w-9 h-9 rounded-full overflow-hidden border border-border bg-white flex items-center justify-center shrink-0">
-                                    <img
-                                        src={ChemAILogo}
-                                        alt="Profile"
-                                        className="w-full h-full object-contain"
-                                    />
-                                </div>
-                                <div className="flex flex-col overflow-hidden">
-                                    <span className="text-sm font-semibold truncate">
-                                        {user ? `${user.firstName} ${user.lastName}` : 'Admin User'}
-                                    </span>
-                                    <span className="text-xs text-muted-foreground truncate">
-                                        {user?.email || 'admin@ai-chem.com'}
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Dropdown Actions */}
-                            <button
-                                onClick={handleLogout}
-                                className="flex items-center gap-2 w-full text-sm font-medium text-destructive hover:bg-destructive/10 px-3 py-2 rounded-lg transition-colors text-left"
-                            >
-                                <span>Logout</span>
-                            </button>
-                        </div>
-                    )}
+                    {isOpen && <UserProfileDropdown />}
                 </div>
             </div>
         </header>

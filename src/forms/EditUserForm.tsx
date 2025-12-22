@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { X, Check, UserPlus } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Check, Edit2 } from 'lucide-react';
 
-interface AddUserFormProps {
+interface IEditUserFormProps {
     isOpen: boolean;
     onClose: () => void;
-    onSave?: (data: any) => void;
+    onSave: (data: any) => void;
+    userData: any;
 }
 
-export const AddUserForm: React.FC<AddUserFormProps> = ({ isOpen, onClose, onSave }) => {
+const EditUserForm: React.FC<IEditUserFormProps> = ({ isOpen, onClose, onSave, userData }) => {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -17,11 +18,34 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ isOpen, onClose, onSav
         city: '',
         state: '',
         pincode: '',
-        organization: '',
-        role: 'Viewer',
-        status: 'Active',
-        isVerified: false
+        status: 'active',
+        isVerified: true,
+        notes: ''
     });
+
+    useEffect(() => {
+        if (userData) {
+            // Split name if needed or just use name as first name for now if structure differs, 
+            // but relying on user's provided structure implying firstName/lastName split.
+            // If userData comes from UserTable which has 'name', we might need to split it.
+            // For now, I'll assume userData might match or we split 'name' if firstName is missing.
+            const nameParts = userData.name ? userData.name.split(' ') : ['', ''];
+
+            setFormData({
+                firstName: userData.firstName || nameParts[0] || '',
+                lastName: userData.lastName || nameParts.slice(1).join(' ') || '',
+                email: userData.email || '',
+                phone: userData.phone || '',
+                address: userData.address || '',
+                city: userData.city || '',
+                state: userData.state || '',
+                pincode: userData.pincode || '',
+                status: userData.status || 'Active',
+                isVerified: userData.isVerified || false,
+                notes: userData.notes || ''
+            });
+        }
+    }, [userData]);
 
     const handleInputChange = (field: string, value: any) => {
         setFormData(prev => ({
@@ -32,10 +56,8 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ isOpen, onClose, onSav
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Submitted New User Data:', formData);
-        if (onSave) onSave(formData);
+        onSave({ ...userData, ...formData });
         onClose();
-        // Reset form after close if needed, but keeping simple for now
     };
 
     if (!isOpen) return null;
@@ -52,9 +74,9 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ isOpen, onClose, onSav
                 <div className="px-6 py-4 border-b border-border/10 bg-muted/5 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-primary/10 text-primary rounded-lg">
-                            <UserPlus size={18} />
+                            <Edit2 size={18} />
                         </div>
-                        <h2 className="text-xl font-bold tracking-tight">Add New User</h2>
+                        <h2 className="text-xl font-bold tracking-tight">Edit User</h2>
                     </div>
                     <button
                         onClick={onClose}
@@ -81,7 +103,6 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ isOpen, onClose, onSav
                                         onChange={(e) => handleInputChange('firstName', e.target.value)}
                                         required
                                         className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-background"
-                                        placeholder="core"
                                     />
                                 </div>
 
@@ -94,7 +115,6 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ isOpen, onClose, onSav
                                         onChange={(e) => handleInputChange('lastName', e.target.value)}
                                         required
                                         className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-background"
-                                        placeholder="techies"
                                     />
                                 </div>
                             </div>
@@ -109,7 +129,6 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ isOpen, onClose, onSav
                                         onChange={(e) => handleInputChange('email', e.target.value)}
                                         required
                                         className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-background"
-                                        placeholder="Coretechies@gmail.com"
                                     />
                                 </div>
 
@@ -122,7 +141,6 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ isOpen, onClose, onSav
                                         onChange={(e) => handleInputChange('phone', e.target.value)}
                                         required
                                         className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-background"
-                                        placeholder="+91 1234567890 "
                                     />
                                 </div>
                             </div>
@@ -140,7 +158,6 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ isOpen, onClose, onSav
                                     onChange={(e) => handleInputChange('address', e.target.value)}
                                     rows={3}
                                     className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-background resize-none"
-                                    placeholder="Street address, P.O. box, etc."
                                 />
                             </div>
 
@@ -186,41 +203,12 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ isOpen, onClose, onSav
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label htmlFor="organization" className="block text-sm font-medium mb-1.5">Organization</label>
-                                    <input
-                                        id="organization"
-                                        type="text"
-                                        value={formData.organization}
-                                        onChange={(e) => handleInputChange('organization', e.target.value)}
-                                        className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-background"
-                                        placeholder="Organization Name"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label htmlFor="role" className="block text-sm font-medium mb-1.5">Role</label>
-                                    <select
-                                        id="role"
-                                        value={formData.role}
-                                        onChange={(e) => handleInputChange('role', e.target.value)}
-                                        className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-background"
-                                    >
-                                        <option value="Viewer">Viewer</option>
-                                        <option value="Reviewer">Reviewer</option>
-                                        <option value="Safety Officer">Safety Officer</option>
-                                        <option value="Admin">Admin</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
                                     <label htmlFor="status" className="block text-sm font-medium mb-1.5">Status</label>
                                     <select
                                         id="status"
                                         value={formData.status}
                                         onChange={(e) => handleInputChange('status', e.target.value)}
-                                        className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-background appearance-none"
+                                        className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-background "
                                     >
                                         <option value="Active">Active</option>
                                         <option value="Inactive">Inactive</option>
@@ -239,10 +227,22 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ isOpen, onClose, onSav
                                     <label htmlFor="isVerified" className="text-sm font-medium">Email Verified</label>
                                 </div>
                             </div>
+
+                            {/* <div>
+                                <label htmlFor="notes" className="block text-sm font-medium mb-1.5">Notes</label>
+                                <textarea
+                                    id="notes"
+                                    value={formData.notes}
+                                    onChange={(e) => handleInputChange('notes', e.target.value)}
+                                    rows={3}
+                                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-background resize-none"
+                                    placeholder="Additional notes about the user..."
+                                />
+                            </div> */}
                         </div>
 
                         {/* Actions */}
-                        <div className="sticky -bottom-5 bg-white pt-4 border-t border-border flex justify-end gap-3">
+                        <div className="sticky -bottom-4 bg-white pt-4 border-t border-border flex justify-end gap-3">
                             <button
                                 type="button"
                                 onClick={onClose}
@@ -255,7 +255,7 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ isOpen, onClose, onSav
                                 className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg shadow-sm flex items-center gap-2 transition-colors"
                             >
                                 <Check size={16} />
-                                Create User
+                                Update User
                             </button>
                         </div>
                     </form>
@@ -264,3 +264,5 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({ isOpen, onClose, onSav
         </div>
     );
 };
+
+export { EditUserForm };

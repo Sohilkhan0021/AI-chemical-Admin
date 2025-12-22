@@ -17,54 +17,50 @@ export default function ForgotPassword() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-            <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-8 shadow-md">
-                <div>
-                    <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-                        Reset Password
+        <div className="flex min-h-screen items-center justify-center bg-gray-50/50 px-4">
+            <div className="w-full max-w-[440px] space-y-6 rounded-xl bg-card p-8 shadow-sm border border-border">
+                <div className="text-center space-y-2">
+                    <h2 className="text-2xl font-semibold text-primary">
+                        Your Email
                     </h2>
-                    <p className="mt-2 text-center text-sm text-gray-600">
-                        Enter your email address and we'll send you a link to reset your password.
+                    <p className="text-sm text-muted-foreground">
+                        Enter your email to reset password
                     </p>
                 </div>
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                <form className="space-y-5" onSubmit={handleSubmit}>
                     {message && (
-                        <div className="rounded-md bg-green-50 p-4 text-sm text-green-700">
+                        <div className="rounded-lg bg-green-50 p-4 text-sm text-green-700 font-medium">
                             {message}
                         </div>
                     )}
-                    <div className="rounded-md shadow-sm">
-                        <div>
-                            <label htmlFor="email-address" className="sr-only">
-                                Email address
-                            </label>
-                            <input
-                                id="email-address"
-                                name="email"
-                                type="email"
-                                autoComplete="email"
-                                required
-                                className="relative block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3"
-                                placeholder="Email address"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </div>
+                    <div className="space-y-1.5">
+                        <label htmlFor="email" className="block text-sm font-medium text-foreground">
+                            Email
+                        </label>
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            autoComplete="email"
+                            required
+                            placeholder="email@email.com"
+                            className="flex h-11 w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
                     </div>
 
-                    <div>
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="group relative flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-indigo-400"
-                        >
-                            {loading ? 'Sending...' : 'Send Reset Link'}
-                        </button>
-                    </div>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="inline-flex items-center justify-center whitespace-nowrap w-full h-11 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+                    >
+                        {loading ? 'Sending...' : 'Continue'}
+                    </button>
 
-                    <div className="text-center text-sm">
-                        <Link to="/auth/login" className="font-medium text-indigo-600 hover:text-indigo-500">
-                            Back to Sign in
+                    <div className="text-center">
+                        <Link to="/auth/login" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors flex items-center justify-center gap-2">
+                            <span>←</span> Back to Login
                         </Link>
                     </div>
                 </form>

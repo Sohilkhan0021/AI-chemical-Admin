@@ -11,6 +11,8 @@ import AuditLogPage from './pages/AuditLogPage'
 import ExportPage from './pages/ExportPage'
 // auth
 import { AuthProvider, RequireAuth, Login, ForgotPassword } from './auth';
+import UserDetailsPage from './pages/UserDetailsPage';
+import SDSDetailsPage from './pages/SDSDetailsPage';
 
 function App() {
   return (
@@ -30,8 +32,10 @@ function App() {
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<DashboardPage />} />
             <Route path="registry" element={<SDSRegistryPage />} />
+            <Route path="sds/:sdsId" element={<SDSDetailsPage />} />
             <Route path="organizations" element={<OrganizationsPage />} />
             <Route path="users" element={<UsersPage />} />
+            <Route path="users/:userId" element={<UserDetailsPage />} />
             <Route path="settings" element={<SettingsPage />} />
             <Route path="re-validation" element={<ReValidationPage />} />
             <Route path="review-queue" element={<ManualReviewPage />} />
