@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-    Calendar,
-    Settings,
-    MoreHorizontal,
-    Play,
-    ChevronDown,
-    Eye
-} from 'lucide-react';
+import {Calendar,Settings,MoreHorizontal,Play,ChevronDown,Eye} from 'lucide-react';
 import { Badge } from '../components/Badge';
 
 const scheduleData = [

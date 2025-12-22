@@ -8,7 +8,6 @@ import {
     FileText,
     FileSpreadsheet,
     FileCode,
-    Globe2,
     ShieldAlert
 } from 'lucide-react';
 import { ExportFilters } from '../blocks/export/ExportFilters';
