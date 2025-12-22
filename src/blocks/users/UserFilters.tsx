@@ -1,7 +1,12 @@
 import React from 'react';
 import { Search, Filter, Download, Plus } from 'lucide-react';
 
-export const UserFilters: React.FC = () => {
+
+export interface UserFiltersProps {
+    onAddUserClick: () => void;
+}
+
+export const UserFilters: React.FC<UserFiltersProps> = ({ onAddUserClick }) => {
     return (
         <div className="card flex flex-wrap gap-6 items-center">
             <div className="flex-1 min-w-[300px] flex items-center gap-3 bg-muted px-4 py-2 rounded-lg border border-transparent focus-within:border-accent transition-all">
@@ -33,7 +38,7 @@ export const UserFilters: React.FC = () => {
                 <button className="btn btn-outline gap-2">
                     <Download size={16} /> Export
                 </button>
-                <button className="btn btn-primary gap-2">
+                <button className="btn btn-primary gap-2" onClick={onAddUserClick}>
                     <Plus size={16} /> Add User
                 </button>
             </div>

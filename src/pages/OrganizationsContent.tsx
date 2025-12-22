@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Badge } from '../components/Badge';
 import { OrganizationDetailModal } from '../components/OrganizationDetailModal';
+import { AddOrganizationForm } from '../forms/AddOrganizationForm';
 
 // Mock data for Organizations
 const mockOrganizations = [
@@ -65,6 +66,7 @@ const mockOrganizations = [
 export const OrganizationsContent: React.FC = () => {
     const [selectedOrg, setSelectedOrg] = useState<any>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isAddOrgModalOpen, setIsAddOrgModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -103,7 +105,10 @@ export const OrganizationsContent: React.FC = () => {
                     <button className="btn btn-outline gap-2 bg-white shadow-sm hover:bg-muted transition-all">
                         <Download size={18} /> Export
                     </button>
-                    <button className="btn btn-primary gap-2 shadow-lg shadow-accent/20 active:scale-95 transition-all">
+                    <button
+                        className="btn btn-primary gap-2 shadow-lg shadow-accent/20 active:scale-95 transition-all"
+                        onClick={() => setIsAddOrgModalOpen(true)}
+                    >
                         <Plus size={18} /> Add Organization
                     </button>
                 </div>
@@ -248,6 +253,11 @@ export const OrganizationsContent: React.FC = () => {
                     org={selectedOrg}
                 />
             )}
+
+            <AddOrganizationForm
+                isOpen={isAddOrgModalOpen}
+                onClose={() => setIsAddOrgModalOpen(false)}
+            />
         </div>
     );
 };
