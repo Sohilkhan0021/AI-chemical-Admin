@@ -10,7 +10,7 @@ import OrganizationsPage from './pages/OrganizationsPage'
 import AuditLogPage from './pages/AuditLogPage'
 import ExportPage from './pages/ExportPage'
 // auth
-import { AuthProvider, RequireAuth, Login, Register, ForgotPassword } from './auth';
+import { AuthProvider, RequireAuth, Login, ForgotPassword } from './auth';
 
 function App() {
   return (
@@ -19,7 +19,6 @@ function App() {
         <Routes>
           <Route path="auth">
             <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
           </Route>
 

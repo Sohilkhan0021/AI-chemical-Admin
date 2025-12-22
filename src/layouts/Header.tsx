@@ -1,9 +1,39 @@
 import React from 'react';
 import { Search, Bell, ShieldCheck } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../auth/useAuthContext';
 import ChemAILogo from '../assets/images/logo.png';
 
 
 export const Header: React.FC = () => {
+    const { user, logout } = useAuthContext();
+    const navigate = useNavigate();
+    const [isOpen, setIsOpen] = useState(false);
+    const profileRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    const handleLogout = async () => {
+        try {
+            navigate('/auth/login');
+            await logout();
+        } catch (error) {
+            console.error('Logout failed', error);
+        }
+    };
+
     return (
         <header className="h-16 bg-card/80 backdrop-blur-md border-b border-border flex items-center justify-between px-8 sticky top-0 z-[90]">
             <div className="flex-1 max-w-[400px]">
@@ -28,19 +58,58 @@ export const Header: React.FC = () => {
                     <Bell size={20} />
                     <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-destructive rounded-full border-2 border-card"></span>
                 </button>
-                <div className="flex items-center gap-4 pl-6 border-l border-border">
-                    <div className="flex flex-col items-end">
-                        <span className="text-sm font-semibold">Admin User</span>
-                        <span className="text-[11px] text-muted-foreground">Safety Officer</span>
-                    </div>
-                    <div className="w-9 h-9 rounded-full overflow-hidden border border-border bg-white flex items-center justify-center">
-                        <img
-                            src={ChemAILogo}
-                            alt="Admin Profile"
-                            className="w-full h-full object-contain"
-                        />
-                    </div>
+                <div ref={profileRef} className="relative">
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="flex items-center gap-4 pl-6 border-l border-border hover:opacity-80 transition-opacity outline-none"
+                    >
+                        <div className="flex flex-col items-end hidden md:flex">
+                            <span className="text-sm font-semibold">
+                                {user ? `${user.firstName} ${user.lastName}` : 'Admin User'}
+                            </span>
+                            <span className="text-[11px] text-muted-foreground capitalize">
+                                {user?.role || 'Safety Officer'}
+                            </span>
+                        </div>
+                        <div className="w-9 h-9 rounded-full overflow-hidden border border-border bg-white flex items-center justify-center">
+                            <img
+                                src={ChemAILogo}
+                                alt="Admin Profile"
+                                className="w-full h-full object-contain"
+                            />
+                        </div>
+                    </button>
 
+                    {isOpen && (
+                        <div className="absolute top-full right-0 mt-3 w-64 bg-card border border-border rounded-xl shadow-lg p-4 flex flex-col gap-2 z-[100] animate-in fade-in zoom-in-95 duration-200">
+                            {/* Dropdown Header */}
+                            <div className="flex items-center gap-3 pb-3 mb-1 border-b border-border">
+                                <div className="w-9 h-9 rounded-full overflow-hidden border border-border bg-white flex items-center justify-center shrink-0">
+                                    <img
+                                        src={ChemAILogo}
+                                        alt="Profile"
+                                        className="w-full h-full object-contain"
+                                    />
+                                </div>
+                                <div className="flex flex-col overflow-hidden">
+                                    <span className="text-sm font-semibold truncate">
+                                        {user ? `${user.firstName} ${user.lastName}` : 'Admin User'}
+                                    </span>
+                                    <span className="text-xs text-muted-foreground truncate">
+                                        {user?.email || 'admin@ai-chem.com'}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Dropdown Actions */}
+                            <button
+                                onClick={handleLogout}
+                                className="flex items-center gap-2 w-full text-sm font-medium text-destructive hover:bg-destructive/10 px-3 py-2 rounded-lg transition-colors text-left"
+                            >
+                                <span>Logout</span>
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </header>
